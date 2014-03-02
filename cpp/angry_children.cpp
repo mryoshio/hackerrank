@@ -1,21 +1,28 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <climits>
 
 using namespace std;
 
 int main() {
   long n, k;
-  cin >> n;
-  cin >> k;
+  cin >> n >> k;
 
-  long v = 0;  
   vector<long> packets;
-  for (long i = 0; i < n; i++) {
-    cin >> v;
-    packets.push_back(v);
-  }
+  packets.assign(n, LONG_MAX);
+  for (long i = 0; i < n; i++)
+    cin >> packets[i];
+
   sort(packets.begin(), packets.end());
-  cout << (packets[k-1] - packets.front());
+  long diff, unfairness = LONG_MAX;
+
+  for (int i = 0; i + k <= packets.size(); i++) {
+    diff = packets[i + k - 1] - packets[i];
+    if (diff < unfairness)
+      unfairness = diff;
+  }
+
+  cout << unfairness;
   return 0;
 }
