@@ -11,7 +11,7 @@ void solve() {
   for (int i = 0; i < T; i++) {
     int v = 3;
     cin >> s >> e;
-    for (; s < e; s++)
+    for (; s <= e; s++)
       if (v > widths.at(s)) v = widths.at(s);
     cout << v << endl;
   }
