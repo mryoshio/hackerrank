@@ -1,23 +1,31 @@
 #include <iostream>
-#include <map>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
+int N;
+
 void solve() {
   string s;
-  map<char, int> m;
+  queue<char> q;
 
-  for (char c = 'a'; c != 'z'; c++) m[c] = 0;
+  for (int i = 0; i < 26; i++)
+    q.push('a' + i);
 
-  cin >> s;
-  for (string::iterator it = s.begin(); it != s.end(); it++) {
-    cout << *it << endl;
-    cout << m['a'] << endl;
-    cout << m['b'] << endl;
+  for (int i = 0; i < N; i ++) {
+    cin >> s;
+    for (int j = 0, c_max = q.size(); j < c_max; j++) {
+      char v = q.front(); q.pop();
+      if (find(s.begin(), s.end(), v) != s.end())
+        q.push(v);
+    }
   }
+  cout << q.size() << endl;
 }
 
 int main() {
+  cin >> N;
   solve();
   return 0;
 }
