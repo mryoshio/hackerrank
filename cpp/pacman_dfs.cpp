@@ -22,7 +22,7 @@ void dfs(int r, int c, int pacman_r, int pacman_c, int food_r, int food_c, vecto
 
   while (!stck.empty()) {
     pos cur = stck.top(); stck.pop();
-    visited.push(pos(cur.first, cur.second));
+    visited.push(cur);
 
     if (cur == pos(food_r, food_c)) break;
 
@@ -34,7 +34,7 @@ void dfs(int r, int c, int pacman_r, int pacman_c, int food_r, int food_c, vecto
           new_c >= 0 && new_c <= c-1 &&
           grid[new_r][new_c] != '%' && grid[new_r][new_c] != 'f') {
         grid[new_r][new_c] = 'f';
-        paths[new_r][new_c] = pos(cur.first, cur.second);
+        paths[new_r][new_c] = cur;
         stck.push(pos(new_r, new_c));
       }
     }
