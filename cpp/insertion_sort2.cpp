@@ -4,62 +4,52 @@
 using namespace std;
 
 int s;
-int ar[1001] = {};
+int ar[1001];
 
 void d() {
-  for (int i=0; i<s; i++)
+  for (int i = 0; i < s; i++)
     cout << ar[i] << " ";
   cout << endl;
 }
 
 void insertionSort(int ar[]) {
+  if (s == 1) return;
 
-  if (s == 1) {
-    d();
-    return;
-  }
+  int i;
+  bool insertable;
 
-  int idx = 0;
-
-  for (int i = 1; i < s; i++) {
-    for (int j = 0; j < i; j++) {
-      while (ar[j] <= ar[i])
-        idx++;
+  do {
+    insertable = false;
+    for (i = 1; i < s; i++) {
+      if (ar[i-1] > ar[i]) {
+        insertable = true;
+        break;
+      }
     }
-
-
-    for (int i=s-1; idx < i; i--) {
-      ar[i] = ar[i-1];
-      d();
-  }
     
-  }
-
-  while(t < s) {
-    int x = ar[t];
-    int idx = 0;
-
-    while (ar[idx] <= x)
-      idx++;
-
-    cout << idx << endl;
-
-    for (int i=t; idx < i; i--) {
+    if (insertable) {
+      int tmp;
+      int idx = s-1;
+      while (i < idx) {
+        tmp = ar[idx];
+        ar[idx] = ar[idx-1];
+        ar[idx-1] = tmp;
+        idx--;
+      }
+      tmp = ar[i];
       ar[i] = ar[i-1];
+      ar[i-1] = tmp;
+      d();
+      insertable = true;
     }
-
-    ar[idx] = x;
-
-    t++;
-  }
+  } while (insertable);
   d();
 }
 
 int main() {
   cin >> s;
-  ar[s+1] = INT_MAX;
-  for (int i=0; i<s; i++)
+  for (int i = 0; i < s; i++)
     cin >> ar[i];
-  insertionSort (ar);
+  insertionSort(ar);
   return 0;
 }
