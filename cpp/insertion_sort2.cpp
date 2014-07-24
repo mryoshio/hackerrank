@@ -4,52 +4,32 @@
 using namespace std;
 
 int s;
-int ar[1001];
 
-void d() {
+void d(int* ar) {
   for (int i = 0; i < s; i++)
     cout << ar[i] << " ";
   cout << endl;
 }
 
-void insertionSort(int ar[]) {
-  if (s == 1) return;
-
-  int i;
-  bool insertable;
-
-  do {
-    insertable = false;
-    for (i = 1; i < s; i++) {
-      if (ar[i-1] > ar[i]) {
-        insertable = true;
-        break;
-      }
+void insertionSort(int* ar) {
+  for (int i = 1; i < s; i++) {
+    int t = ar[i];
+    if (ar[i-1] > t) {
+      int j = i;
+      do {
+        ar[j] = ar[j-1];
+        j--;
+      } while(ar[j-1] > t && j > 0);
+      ar[j] = t;
     }
-    
-    if (insertable) {
-      int tmp;
-      int idx = s-1;
-      while (i < idx) {
-        tmp = ar[idx];
-        ar[idx] = ar[idx-1];
-        ar[idx-1] = tmp;
-        idx--;
-      }
-      tmp = ar[i];
-      ar[i] = ar[i-1];
-      ar[i-1] = tmp;
-      d();
-      insertable = true;
-    }
-  } while (insertable);
-  d();
+    d(ar);
+  }
 }
 
 int main() {
+  int ar[1001];
   cin >> s;
-  for (int i = 0; i < s; i++)
-    cin >> ar[i];
+  for (int i = 0; i < s; i++) cin >> ar[i];
   insertionSort(ar);
   return 0;
 }
