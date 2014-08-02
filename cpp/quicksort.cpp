@@ -11,34 +11,25 @@ void d(vector<int> ar) {
   cout << endl;
 }
 
-void quickSort(vector<int> ar, int ar_size) {
-  stack<pair<int, int> > st;
+void quickSort(vector<int> &ar, int l, int r) {
+  if (r-l > 1)
+    cout << l << " " << r << endl;
 
-  st.push(border(0, ar_size-1));
-
-  while (!st.empty()) {
-    border b = st.top();
-    st.pop();
-    int f = b.first;
-    int l = b.second;
-    int p = f;
-
-    while (f < l) {
-      if (ar[p] > ar[l]) {
-        f++;
-        if (f != l)
-          swap(ar[f], ar[l]);
-        swap(ar[f], ar[p]);
-        p++;
-      }
-      else l--;
+  if (l < r) {
+    int i = l;
+    int j = r;
+    int p = ar[l];
+    while (true) {
+      while (ar[i] < p) i++;
+      while (p < ar[j]) j--;
+      if (i >= j) break;
+      swap(ar[i], ar[j]);
+      i++; j--;
     }
-    if (b.first < p-1)
-      st.push(border(b.first, p-1));
-    if (b.second > p+1)
-      st.push(border(p+1, b.second));
+    quickSort(ar, l, i-1);
+    quickSort(ar, j+1, r);
+
   }
-  d(ar);
 }
 
 int main(void) {
@@ -50,6 +41,6 @@ int main(void) {
     cin >> _ar_tmp;
     _ar.push_back(_ar_tmp); 
   }
-  quickSort(_ar, _ar_size);
+  quickSort(_ar, 0, _ar_size-1);
   return 0;
 }
