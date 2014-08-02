@@ -1,6 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 using namespace std;
+
+typedef pair<int, int> border;
 
 void d(vector<int> ar) {
   for (vector<int>::iterator it = ar.begin(); it != ar.end(); it++)
@@ -8,29 +11,34 @@ void d(vector<int> ar) {
   cout << endl;
 }
 
-void quickSort(vector<int> &ar, int ar_size) {
-  d(ar);
-  vector<int> lefts, rights;
-  vector<int>::iterator it = ar.begin();
-  int p = *(it++);
-  while(it != ar.end()) {
-    if (p > *it) {
-      lefts.push_back(*it);
-    } else {
-      rights.push_back(*it);
+void quickSort(vector<int> ar, int ar_size) {
+  stack<pair<int, int> > st;
+
+  st.push(border(0, ar_size-1));
+
+  while (!st.empty()) {
+    border b = st.top();
+    st.pop();
+    int f = b.first;
+    int l = b.second;
+    int p = f;
+
+    while (f < l) {
+      if (ar[p] > ar[l]) {
+        f++;
+        if (f != l)
+          swap(ar[f], ar[l]);
+        swap(ar[f], ar[p]);
+        p++;
+      }
+      else l--;
     }
-    it++;
+    if (b.first < p-1)
+      st.push(border(b.first, p-1));
+    if (b.second > p+1)
+      st.push(border(p+1, b.second));
   }
-  if (lefts.size() > 1)
-    quickSort(lefts, lefts.size());
-  if (rights.size() > 1)
-    quickSort(rights, rights.size());
-  for (it = lefts.begin(); it != lefts.end(); it++)
-    cout << *it << " ";
-  cout << p;
-    for (it = rights.begin(); it != rights.end(); it++)
-      cout << " " << *it;
-  cout << endl;
+  d(ar);
 }
 
 int main(void) {
