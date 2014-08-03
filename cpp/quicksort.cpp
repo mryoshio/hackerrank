@@ -3,33 +3,37 @@
 #include <stack>
 using namespace std;
 
-typedef pair<int, int> border;
-
-void d(vector<int> ar) {
-  for (vector<int>::iterator it = ar.begin(); it != ar.end(); it++)
-    cout << *it << " ";
+void d(vector<int> ar, int l, int r) {
+  for (int i = l; i <= r; i++)
+    cout << ar[i] << " ";
   cout << endl;
 }
 
 void quickSort(vector<int> &ar, int l, int r) {
-  if (r-l > 1)
-    cout << l << " " << r << endl;
+  vector<int> tmp(ar.size());
+  int i, l_idx = l, r_idx = r;
+  int piv = ar[l];
 
-  if (l < r) {
-    int i = l;
-    int j = r;
-    int p = ar[l];
-    while (true) {
-      while (ar[i] < p) i++;
-      while (p < ar[j]) j--;
-      if (i >= j) break;
-      swap(ar[i], ar[j]);
-      i++; j--;
-    }
-    quickSort(ar, l, i-1);
-    quickSort(ar, j+1, r);
+  for (i = l+1; i <= r; i++)
+    if (ar[i] < piv) tmp[l_idx++] = ar[i];
+    else tmp[r_idx--] = ar[i];
 
+  for (i = l; i < l_idx; i++)
+    ar[i] = tmp[i];
+
+  ar[l_idx] = piv;
+
+  for (i = r; i > r_idx; i--)
+    ar[++l_idx] = tmp[i];
+
+  if (r-l <= 1) {
+    if (r-l == 1)
+      d(ar, l, r);
+    return;
   }
+  quickSort(ar, l, r_idx-1);
+  quickSort(ar, r_idx+1, r);
+  d(ar, l, r);
 }
 
 int main(void) {
