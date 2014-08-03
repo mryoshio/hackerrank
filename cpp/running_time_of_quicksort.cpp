@@ -21,17 +21,17 @@ void quickSort(vector<int> ar, int ar_size) {
     st.pop();
     int f = b.first;
     int l = b.second;
-    int p = f;
+    int p = l;
 
     while (f < l) {
       if (ar[p] > ar[l]) {
-        f++;
+        l--;
         if (f != l)
           swap(ar[f], ar[l]);
-        swap(ar[f], ar[p]);
-        p++;
+        swap(ar[l], ar[p]);
+        p--;
       }
-      else l--;
+      else f++;
     }
     if (b.first < p-1)
       st.push(border(b.first, p-1));
