@@ -13,6 +13,8 @@ vector<long> solve(int depth, long val) {
     v.push_back(val);
     return v;
   }
+  if (!m[depth][val].empty()) return m[depth][val];
+
   int i;
   vector<long> s, lefts, rights;
 
@@ -26,7 +28,6 @@ vector<long> solve(int depth, long val) {
 
   sort(s.begin(), s.end());
   vector<long>::iterator last = unique(s.begin(), s.end());
-
   s.resize(last - s.begin());
 
   return m[depth][val] = s;
@@ -35,11 +36,15 @@ vector<long> solve(int depth, long val) {
 int main() {
   int t;
   cin >> t;
+
   while (t--) {
     cin >> N >> vals[0] >> vals[1];
+
     vector<long> s = solve(1, 0);
+
     sort(s.begin(), s.end());
     vector<long>::iterator last = unique(s.begin(), s.end());
+
     vector<long>::iterator it = s.begin();
     cout << *it; it++;
     for (; it != last; it++)

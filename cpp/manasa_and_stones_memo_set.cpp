@@ -13,6 +13,8 @@ set<long> solve(int depth, long val) {
     v.insert(val);
     return v;
   }
+  if (!m[depth][val].empty()) return m[depth][val];
+
   int i;
   set<long> s, lefts, rights;
 
@@ -29,9 +31,12 @@ set<long> solve(int depth, long val) {
 int main() {
   int t;
   cin >> t;
+
   while (t--) {
     cin >> N >> vals[0] >> vals[1];
+
     set<long> s = solve(1, 0);
+
     set<long>::iterator it = s.begin();
     cout << *it; it++;
     for (; it != s.end(); it++)
