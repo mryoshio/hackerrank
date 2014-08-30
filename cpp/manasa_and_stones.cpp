@@ -1,38 +1,27 @@
 #include <iostream>
 #include <vector>
-#include <set>
+#include <algorithm>
 using namespace std;
 
-int N;
-
-void solve(int cnt, int sum, int idx, vector<int> &v, set<int> &ans) {
-  sum += v[idx];
-  cnt++;
-  if (cnt == N) {
-    ans.insert(sum);
-    return;
-  }
-  for (int i = 0; i < v.size(); i++)
-    solve(cnt, sum, i, v, ans);
-}
-
 int main() {
-  int t;
+  int a, b, n, t;
+  vector<long> v;
   cin >> t;
   while (t--) {
-    set<int> ans;
-    vector<int> v;
-    cin >> N;
-    for (int i = 0; i < 2; i++) {
-      int x;
-      cin >> x;
-      v.push_back(x);
+    v.clear();
+    cin >> n >> a >> b;
+    n--;
+    if (a == b) {
+      cout << (n*a) << endl;
+      continue;
     }
-    for (int i = 0; i < v.size(); i++)
-      solve(1, 0, i, v, ans);
-    for(set<int>::iterator it = ans.begin(); it != ans.end(); it++)
-      cout << *it << ' ';
-    cout << endl;
+    for (int i = 0; i <= n; i++)
+      v.push_back(a*i + (n-i)*b);
+
+    sort(v.begin(), v.end());
+    for (int i = 0; i < v.size()-1; i++)
+      cout << v[i] << ' ';
+    cout << v[v.size()-1] << endl;
   }
   return 0;
 }
