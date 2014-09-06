@@ -4,75 +4,71 @@
 using namespace std;
 typedef pair<int, int> border;
 
-void d(vector<int> ar, int l, int r) {
-  for (int i = l; i <= r; i++)
-    cout << ar[i] << " ";
+void d(vector<int> v) {
+  vector<int>::iterator it;
+  for (it = v.begin(); it != v.end(); it++)
+    cout << *it << " ";
   cout << endl;
 }
 
-int insertionSort(vector<int> ar, int ar_size) {
-  int cnt = 0;
-  for (int i = 1; i < ar_size; i++) {
-    int t = ar[i];
-    if (ar[i-1] > t) {
-      int j = i;
-      do {
-        ar[j] = ar[j-1];
-        j--;
-        cnt++;
-      } while(ar[j-1] > t && j > 0);
-      ar[j] = t;
+long quickSort(vector<int> &v, int left, int right) {
+  long cnt = 0;
+
+  if (left < right) {
+    int i = left, j = right;
+    int p = v[right];
+
+    while (true) {
+      while (v[i] < p) i++;
+      while (p < v[j]) j--;
+      if (i >= j) break;
+      
+      int tmp = v[i];
+      v[i] = v[j];
+      v[j] = tmp;
       cnt++;
+
+      i++; j--;
     }
+    cnt += quickSort(v, left, i-1);
+    cnt += quickSort(v, j+1, right);
   }
   return cnt;
 }
 
-
-int quickSort(vector<int> ar, int ar_size) {
-  int cnt = 0;
-  stack<border> st;
-
-  st.push(border(0, ar_size-1));
-
-  while (!st.empty()) {
-    border b = st.top();
-    st.pop();
-    int f = b.first;
-    int l = b.second;
-    int p = l;
-
-    while (f < l) {
-      if (ar[f] > ar[p]) {
-        l--;
-        if (f != l) {
-          swap(ar[f], ar[l]);
-          cnt++;
-        }
-        swap(ar[l], ar[p]);
+long insertionSort(vector<int> v) {
+  long cnt = 0;
+  for (int i = 1; i < v.size(); i++) {
+    int t = v[i];
+    if (v[i-1] > t) {
+      int j = i;
+      do {
+        v[j] = v[j-1];
+        j--;
         cnt++;
-        p--;
-      }
-      else f++;
+      } while(v[j-1] > t && j > 0);
+      v[j] = t;
     }
-    if (b.first < p-1)
-      st.push(border(b.first, p-1));
-    if (b.second > p+1)
-      st.push(border(p+1, b.second));
   }
   return cnt;
 }
 
 int main(void) {
-  vector <int>  _ar;
-  int _ar_size;
-  cin >> _ar_size;
-  for(int _ar_i=0; _ar_i<_ar_size; _ar_i++) {
-    int _ar_tmp;
-    cin >> _ar_tmp;
-    _ar.push_back(_ar_tmp); 
+  vector <int> v;
+  int n;
+  cin >> n;
+
+  for(int i = 0; i < n; i++) {
+    int x;
+    cin >> x;
+    v.push_back(x);
   }
-  cout << quickSort(_ar, _ar_size) << endl;
-  cout << insertionSort(_ar, _ar_size) << endl;
+
+  vector<int> v2(n);
+  copy(v.begin(), v.end(), v2.begin());
+
+  cout << quickSort(v, 0, v.size()-1) << endl;
+  cout << insertionSort(v2) << endl;
+
   return 0;
 }
