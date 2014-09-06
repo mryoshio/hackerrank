@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <stack>
 using namespace std;
-typedef pair<int, int> border;
 
 void d(vector<int> v) {
   vector<int>::iterator it;
@@ -10,6 +8,31 @@ void d(vector<int> v) {
     cout << *it << " ";
   cout << endl;
 }
+
+void swap(vector<int> &v, int i1, int i2) {
+  int t = v[i1];
+  v[i1] = v[i2];
+  v[i2] = t;
+}
+
+long strange_quick_sort(vector<int> &v, int left, int right) {
+  if (left >= right) return 0;
+  long cnt = 0;
+  int cur = left;
+  int piv = v[right];
+
+  for (int i = left; i < right; i++) {
+    if (v[i] < piv) {
+      swap(v, i, cur++);
+      cnt++;
+    }
+  }
+  swap(v, cur, right); cnt++;
+  cnt += strange_quick_sort(v, left, cur-1);
+  cnt += strange_quick_sort(v, cur+1, right);
+  return cnt;
+}
+
 
 long quickSort(vector<int> &v, int left, int right) {
   long cnt = 0;
@@ -67,8 +90,6 @@ int main(void) {
   vector<int> v2(n);
   copy(v.begin(), v.end(), v2.begin());
 
-  cout << quickSort(v, 0, v.size()-1) << endl;
-  cout << insertionSort(v2) << endl;
-
+  cout << insertionSort(v2) - strange_quick_sort(v, 0, v.size()-1) << endl;
   return 0;
 }
