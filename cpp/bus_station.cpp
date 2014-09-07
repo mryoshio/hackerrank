@@ -5,15 +5,30 @@ using namespace std;
 
 vector<long> v;
 
+bool binary_search(long l, long r, long t) {
+  while (l <= r) {
+    long m = (l+r)/2;
+
+    if (v[m] == t)
+      return true;
+
+    if (t < v[m]) r = m-1;
+    else l = m+1;
+  }
+  return false;
+}
+
 void solve() {
   vector<long> ans;
   for (long i = 0; i < v.size(); i++) {
     if (v[v.size()-1] % v[i] != 0)
       continue;
+
     long t = v[i];
     bool possible = true;
-    for (long idx = 1; idx < v[v.size()-1]/v[i]; idx++) {
-      if (find(v.begin()+i, v.end(), t*idx) == v.end()) {
+
+    for (long idx = 2; idx < v[v.size()-1]/v[i]; idx++) {
+      if (!binary_search(i, v.size()-1, t*idx)) {
         possible = false;
         break;
       }
